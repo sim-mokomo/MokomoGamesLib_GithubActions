@@ -1,0 +1,9 @@
+name: hello-world
+on:
+  workflow_dispatch:
+jobs:
+  hello-world:
+    runs-on: self-hosted
+    steps:
+      - name: hello world!!
+        run: echo "Hello Github Actions World"
