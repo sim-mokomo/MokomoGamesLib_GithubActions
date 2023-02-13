@@ -1,0 +1,58 @@
+name: reuseable-unity-build
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: '環境'
+        required: true
+        default: 'Development'
+        type: string
+      platform:
+        description: 'プラットフォーム'
+        required: true
+        default: 'Android'
+        type: string
+      is_upload:
+        description: 'AppCenterにアップロードするかどうか'
+        required: true
+        default: false
+        type: boolean
+      enable_notify:
+        description: '通知を飛ばす'
+        required: true
+        default: true
+        type: boolean
+jobs:
+  show-context:
+    runs-on: self-hosted
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+      - name: Composite Action - Show Context
+        uses: ./.github/actions/show-context
+  ios-build:
+    runs-on: [self-hosted, macos]
+    if: ${{inputs.platform == 'ios'}}
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+      - name: Composite Action - iOS or MacOS Build
+        uses: ./.github/actions/unity-build
+        with:
+          environment: ${{inputs.environment}}
+          platform: ${{inputs.platform}}
+          enable_notify: ${{inputs.enable_notify}}
+          is_upload: ${{inputs.is_upload}}
+  android-build:
+    runs-on: [self-hosted, windows]
+    if: ${{inputs.platform == 'android'}}
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+      - name: Composite Action - Android or Windows Build
+        uses: ./.github/actions/unity-build
+        with:
+          environment: ${{inputs.environment}}
+          platform: ${{inputs.platform}}
+          enable_notify: ${{inputs.enable_notify}}
+          is_upload: ${{inputs.is_upload}}

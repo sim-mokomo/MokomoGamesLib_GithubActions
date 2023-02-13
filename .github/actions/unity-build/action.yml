@@ -1,0 +1,41 @@
+name: unity-build-impl
+description: 'Unityのビルドを行う'
+inputs:
+  environment:
+    description: 'ビルド時の環境'
+    required: true
+  platform:
+    description: 'ビルド対象とするプラットフォーム'
+    required: true
+  build_id:
+    description: 'アーカイブ時のビルドID指定'
+    required: false
+  enable_notify:
+    description: 'ビルド完了時に通知を出すかどうか'
+    required: true
+  is_upload:
+    description: 'ビルド完了後にアプリをAppCenterにアップロードするかどうか'
+    required: true
+outputs:
+  result-json:
+    description: "jsonフォーマットのビルド結果"
+    value: ${{steps.build.outputs.json}}
+runs:
+  using: "composite"
+  steps:
+    - name: Unity - Build
+      shell: bash
+      run: |
+        ./tools/commons/run-client-container.sh $RUNNER_OS
+        docker-compose exec -T client bundle exec fastlane \
+            ${{inputs.platform}} \
+            unity_build \
+            environment:${{inputs.environment}} \
+            upload_to_appcenter:${{inputs.is_upload}} \
+            enable_notify:${{inputs.enable_notify}}
+    - name: Github Actions - Show GITHUB_ENV
+      id: build
+      shell: bash
+      run: |
+        cat $GITHUB_ENV
+        echo "::set-output name=json::${{env.UNITY_BUILD_RESULT_JSON}}"

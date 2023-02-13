@@ -1,0 +1,17 @@
+name: show-context
+description: 'Githubのコンテキストを表示する'
+runs:
+  using: "composite"
+  steps:
+    - name: Github Actions - Show Github Context
+      shell: bash
+      run:
+        echo '${{ toJSON(github) }}'
+    - name: Github Actions - Show Workflow Call Context
+      shell: bash
+      run: 
+        echo '${{ toJSON(inputs)}}'
+    - name: System - Show Env Context
+      shell: bash
+      run: 
+        env
