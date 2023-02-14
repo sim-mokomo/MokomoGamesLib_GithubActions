@@ -29,7 +29,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
       - name: Composite Action - Show Context
-        uses: ./.github/actions/show-context
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/show-context@main
   ios-build:
     runs-on: [self-hosted, macos]
     if: ${{inputs.platform == 'ios'}}
@@ -37,7 +37,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
       - name: Composite Action - iOS or MacOS Build
-        uses: ./.github/actions/unity-build
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:
           environment: ${{inputs.environment}}
           platform: ${{inputs.platform}}
@@ -50,7 +50,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
       - name: Composite Action - Android or Windows Build
-        uses: ./.github/actions/unity-build
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:
           environment: ${{inputs.environment}}
           platform: ${{inputs.platform}}
