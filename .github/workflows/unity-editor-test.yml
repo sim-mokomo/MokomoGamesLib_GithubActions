@@ -1,0 +1,19 @@
+name: unity-editor-test
+on:
+  pull_request:
+    types: [synchronize, opened]
+jobs:
+  run-editor-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Unity - Test runner
+        uses: game-ci/unity-test-runner@v2.1.1
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: ./client
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
