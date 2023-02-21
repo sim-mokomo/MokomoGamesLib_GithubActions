@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Git - checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Composite Action - Show Context
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/show-context@main
   ios-build:
@@ -36,6 +38,8 @@ jobs:
     steps:
       - name: Git - checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Composite Action - iOS or MacOS Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:
@@ -49,6 +53,8 @@ jobs:
     steps:
       - name: Git - checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Composite Action - Android or Windows Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:

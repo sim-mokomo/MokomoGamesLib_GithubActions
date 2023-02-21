@@ -26,19 +26,9 @@ runs:
     - name: Unity - Build
       shell: bash
       run: |
-        # 汎用向けコンテナのセットアップ
-        git submodule update --init tools/commons
-        cd tools/commons/
-        git fetch
-        git switch -C main origin/main
-        chmod 775 ./run-client-container.sh
-
-        # アプリケーション固有を含めたコンテナセットアップ
-        cd ../
-        chmod 775 ./up-tools-container.sh
-        ./up-tools-container.sh $RUNNER_OS
-        chmod 775 ./exec-tools-container.sh
-        ./exec-tools-container.sh bash -c "cd commons/fastlane && \
+        cd tools/
+        ./apps/up-tools-container.sh $RUNNER_OS
+        ./apps/exec-tools-container.sh bash -c "cd commons/fastlane && \
                                            bundle exec fastlane \
                                               ${{inputs.platform}} \
                                               unity_build \
