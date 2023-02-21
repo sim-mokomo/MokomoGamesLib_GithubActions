@@ -1,7 +1,11 @@
 name: unity-editor-test
 on:
-  pull_request:
-    types: [synchronize, opened]
+  workflow_call:
+    secrets:
+      UNITY_LICENSE:
+        required: true
+      GITHUB_TOKEN:
+        required: true
 jobs:
   run-editor-test:
     runs-on: ubuntu-latest
@@ -15,5 +19,6 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
+          # 個人利用前提なのでプロジェクトフォルダの指定は固定
           projectPath: ./client
           githubToken: ${{ secrets.GITHUB_TOKEN }}
