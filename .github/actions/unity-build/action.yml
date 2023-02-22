@@ -26,6 +26,8 @@ runs:
     - name: Unity - Build
       shell: bash
       run: |
+        git branch
+
         cd tools/
         ./apps/up-tools-container.sh $RUNNER_OS
         ./apps/exec-tools-container.sh bash -c "cd commons/fastlane && \
