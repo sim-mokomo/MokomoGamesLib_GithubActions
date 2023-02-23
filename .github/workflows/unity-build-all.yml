@@ -33,7 +33,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
         with:
-          submodule: recursive
+          submodules: recursive
       - name: Composite Action - iOS Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:
@@ -49,7 +49,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
         with:
-          submodule: recursive
+          submodules: recursive
       - name: Composite Action - Android Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
         with:
@@ -65,7 +65,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
         with:
-          submodule: recursive
+          submodules: recursive
       - name: Slack - Notify Build Result
         shell: bash
         run: |
