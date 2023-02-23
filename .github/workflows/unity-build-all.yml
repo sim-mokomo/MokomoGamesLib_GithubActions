@@ -24,7 +24,7 @@ jobs:
       - name: Git - checkout
         uses: actions/checkout@v3
       - name: Composite Action - Show Context
-        uses: ./.github/actions/show-context
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/show-context@main
   ios-build:
     runs-on: [self-hosted, macos]
     outputs:
