@@ -71,7 +71,8 @@ jobs:
         run: |
           cd tools/
           ./apps/up-tools-container.sh $RUNNER_OS
-          ./apps/exec-tools-container.sh client bundle exec fastlane \
-            notify_unity_build_result_all_from_github_action \
-            ios_build_result:'${{needs.ios-build.outputs.build-result-json}}' \
-            android_build_result:'${{needs.android-build.outputs.build-result-json}}'
+          ./apps/exec-tools-container.sh bash -c "cd commons/fastlane && \
+                                                  bundle exec fastlane \
+                                                    notify_unity_build_result_all_from_github_action \
+                                                    ios_build_result:'${{needs.ios-build.outputs.build-result-json}}' \
+                                                    android_build_result:'${{needs.android-build.outputs.build-result-json}}'"
