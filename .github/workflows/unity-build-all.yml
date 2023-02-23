@@ -36,6 +36,7 @@ jobs:
           submodules: recursive
       - name: Composite Action - iOS Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
+        id: unity-build
         with:
           environment: ${{inputs.environment}}
           platform: ios
@@ -52,6 +53,7 @@ jobs:
           submodules: recursive
       - name: Composite Action - Android Build
         uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
+        id: unity-build
         with:
           environment: ${{inputs.environment}}
           platform: android
