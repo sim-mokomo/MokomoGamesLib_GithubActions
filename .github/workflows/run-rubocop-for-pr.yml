@@ -1,0 +1,19 @@
+name: run-rubocop-for-pr
+on: 
+  workflow_call:
+jobs:
+  run-rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+        with: 
+          submodules: recursive
+      - name: Ruby - setup
+        uses: ruby/setup-ruby@v1.138.0
+        with:
+          ruby-version: 3.0.0
+      - name: Ruby - run rubocop with reviewdog
+        uses: reviewdog/action-rubocop@v2.3.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
