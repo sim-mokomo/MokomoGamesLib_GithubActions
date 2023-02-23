@@ -1,0 +1,76 @@
+name: unity-build-all
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: '環境'
+        required: true
+        default: 'Development'
+        type: string
+      is_upload:
+        description: 'AppCenterにアップロードするかどうか'
+        required: true
+        default: false
+        type: boolean
+      enable_notify:
+        description: '通知を飛ばすか'
+        required: true
+        default: true
+        type: boolean
+jobs:
+  show-context:
+    runs-on: self-hosted
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+      - name: Composite Action - Show Context
+        uses: ./.github/actions/show-context
+  ios-build:
+    runs-on: [self-hosted, macos]
+    outputs:
+      build-result-json: ${{steps.unity-build.outputs.result-json}}
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+        with:
+          submodule: recursive
+      - name: Composite Action - iOS Build
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
+        with:
+          environment: ${{inputs.environment}}
+          platform: ios
+          enable_notify: false
+          is_upload: ${{inputs.is_upload}}
+  android-build:
+    runs-on: [self-hosted, windows]
+    needs: set-env
+    outputs:
+      build-result-json: ${{steps.unity-build.outputs.result-json}}
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+        with:
+          submodule: recursive
+      - name: Composite Action - Android Build
+        uses: sim-mokomo/MokomoGamesLib_GithubActions/.github/actions/unity-build@main
+        with:
+          environment: ${{inputs.environment}}
+          platform: android
+          enable_notify: false
+          is_upload: ${{inputs.is_upload}}
+  notify-result:
+    runs-on: [self-hosted]
+    needs: [ios-build, android-build]
+    if: always()
+    steps:
+      - name: Git - checkout
+        uses: actions/checkout@v3
+      - name: Slack - Notify Build Result
+        shell: bash
+        run: |
+          cd tools/
+          ./apps/up-tools-container.sh $RUNNER_OS
+          ./apps/exec-tools-container.sh client bundle exec fastlane \
+            notify_unity_build_result_all_from_github_action \
+            ios_build_result:'${{needs.ios-build.outputs.build-result-json}}' \
+            android_build_result:'${{needs.android-build.outputs.build-result-json}}'
