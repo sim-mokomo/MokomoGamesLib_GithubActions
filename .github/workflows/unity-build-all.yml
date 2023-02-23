@@ -43,7 +43,6 @@ jobs:
           is_upload: ${{inputs.is_upload}}
   android-build:
     runs-on: [self-hosted, windows]
-    needs: set-env
     outputs:
       build-result-json: ${{steps.unity-build.outputs.result-json}}
     steps:
