@@ -28,7 +28,9 @@ jobs:
   ios-build:
     runs-on: [self-hosted, macos]
     outputs:
-      build-result-json: ${{steps.unity-build.outputs.result-json}}
+      elapsed-time: ${{steps.unity-build.outputs.elapsed-time}}
+      platform: ${{steps.unity-build.outputs.platform}}
+      succeeded: ${{steps.unity-build.outputs.succeeded}}
     steps:
       - name: Git - checkout
         uses: actions/checkout@v3
@@ -45,7 +47,9 @@ jobs:
   android-build:
     runs-on: [self-hosted, windows]
     outputs:
-      build-result-json: ${{steps.unity-build.outputs.result-json}}
+      elapsed-time: ${{steps.unity-build.outputs.elapsed-time}}
+      platform: ${{steps.unity-build.outputs.platform}}
+      succeeded: ${{steps.unity-build.outputs.succeeded}}
     steps:
       - name: Git - checkout
         uses: actions/checkout@v3
@@ -73,8 +77,12 @@ jobs:
         run: |
           cd tools/
           ./apps/up-tools-container.sh $RUNNER_OS
-          ./apps/exec-tools-container.sh bash -c "cd commons/fastlane && \
+          ./apps/exec-tools-container.sh bash -c 'cd commons/fastlane && \
                                                   bundle exec fastlane \
                                                     notify_unity_build_result_all_from_github_action \
-                                                    ios_build_result:'${{needs.ios-build.outputs.build-result-json}}' \
-                                                    android_build_result:'${{needs.android-build.outputs.build-result-json}}'"
+                                                    ios_build_elapsed_time:${{needs.ios-build.outputs.elapsed-time}} \
+                                                    ios_build_platform:${{needs.ios-build.outputs.platform}} \
+                                                    ios_build_succeeded:${{needs.ios-build.outputs.succeeded}} \
+                                                    android_build_elapsed_time:${{needs.android-build.outputs.elapsed-time}} \
+                                                    android_build_platform:${{needs.android-build.outputs.platform}} \
+                                                    android_build_succeeded:${{needs.android-build.outputs.succeeded}}'

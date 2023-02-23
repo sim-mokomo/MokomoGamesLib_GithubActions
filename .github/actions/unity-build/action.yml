@@ -17,9 +17,15 @@ inputs:
     description: 'ビルド完了後にアプリをAppCenterにアップロードするかどうか'
     required: true
 outputs:
-  result-json:
-    description: "jsonフォーマットのビルド結果"
-    value: ${{steps.build.outputs.json}}
+  elapsed-time:
+    description: 'ビルドにかかった時間'
+    value: ${{steps.build.outputs.elapsed-time}}
+  platform:
+    description: 'ビルド対象プラットフォーム'
+    value: ${{steps.build.outputs.platform}}
+  succeeded:
+    description: 'ビルドが成功したか？'
+    value: ${{steps.build.outputs.succeeded}}
 runs:
   using: "composite"
   steps:
@@ -40,4 +46,6 @@ runs:
       shell: bash
       run: |
         cat $GITHUB_ENV
-        echo "::set-output name=json::${{env.UNITY_BUILD_RESULT_JSON}}"
+        echo "::set-output name=elapsed-time::${{env.UNITY_BUILD_RESULT_ELAPSED_TIME}}"
+        echo "::set-output name=platform::${{env.UNITY_BUILD_RESULT_PLATFORM}}"
+        echo "::set-output name=succeeded::${{env.UNITY_BUILD_RESULT_SUCCEEDED}}"
